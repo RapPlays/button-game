@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>cmon, don't give up.</title>
+    <style>
+        #movingButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transition: all 0.5s ease;
+        }
+
+        #objectiveText {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Comic Sans MS', cursive;
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="objectiveText">Objective: Press the button</div>
+    <button id="movingButton" onmouseover="moveButton()" onclick="checkWinner()">Click Me!</button>
+
+    <script>
+        var buttonMoving = false;
+
+        function moveButton() {
+            if (!buttonMoving) {
+                var button = document.getElementById('movingButton');
+                var buttonPosition = button.getBoundingClientRect();
+                var windowWidth = window.innerWidth - buttonPosition.width;
+                var windowHeight = window.innerHeight - buttonPosition.height;
+                var newPositionX = Math.floor(Math.random() * windowWidth);
+                var newPositionY = Math.floor(Math.random() * windowHeight);
+
+                button.style.top = newPositionY + 'px';
+                button.style.left = newPositionX + 'px';
+            }
+        }
+
+        function checkWinner() {
+            var button = document.getElementById('movingButton');
+            var congratsX = window.innerWidth / 2; // Winning position X-coordinate
+            var congratsY = window.innerHeight / 2; // Winning position Y-coordinate
+            var buttonPosition = button.getBoundingClientRect();
+
+            if (
+                Math.abs(buttonPosition.left - congratsX) < 50 &&
+                Math.abs(buttonPosition.top - congratsY) < 50
+            ) {
+                button.innerText = "Congratulations, you won!";
+                button.setAttribute("disabled", "disabled"); // Disables the button after winning
+                button.style.pointerEvents = 'none'; // Disables pointer events to prevent further clicks
+            }
+        }
+    </script>
+</body>
+</html>
